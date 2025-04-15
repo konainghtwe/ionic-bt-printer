@@ -1,0 +1,7 @@
+{
+  "name": "bt-printer",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

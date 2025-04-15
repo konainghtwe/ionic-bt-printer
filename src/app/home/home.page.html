@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Bluetooth Printer</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item>
+      <ion-icon aria-hidden="true" name="bluetooth" slot="start"></ion-icon>
+      <ion-label>Bluetooth</ion-label>
+      <ion-toggle (ionChange)="btenablechange($event)" slot="end" [checked]="isBluetoothEnabled"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="testPrintClick()" expand="block">Print</ion-button>
+  </ion-toolbar>
+</ion-footer>
