@@ -7,6 +7,7 @@ import { ToastController } from '@ionic/angular';
 })
 export class BluetoothPrinterService implements OnDestroy {
 
+    BLUETOOTH_DEVICE_NAME = "bt_device_name";
     BLUETOOTH_DEVICE_ID = 'bt_device_id';
     BLUETOOTH_Service_UUID = "bt_serivce_uuid";
     BLUETOOTH_CHARACTERISTIC_UUID = "bt_char_uuid";
@@ -22,6 +23,22 @@ export class BluetoothPrinterService implements OnDestroy {
     });
 
     await toast.present();
+  }
+
+  getBTDeviceName() : string{
+    return localStorage.getItem(this.BLUETOOTH_DEVICE_NAME)!;
+  }
+
+  getBTDeviceId() : string{
+    return localStorage.getItem(this.BLUETOOTH_DEVICE_ID)!;
+  }
+
+  getBTServiceUUID() : string {
+    return localStorage.getItem(this.BLUETOOTH_Service_UUID)!;
+  }
+
+  getBTCharUUID() : string {
+    return localStorage.getItem(this.BLUETOOTH_CHARACTERISTIC_UUID)!;
   }
 
   async Initialize() {
@@ -42,6 +59,19 @@ export class BluetoothPrinterService implements OnDestroy {
     }
   }
 
+  async ConnectToDevice(deviceId : string){
+    await this.Initialize();
+    let bleDevice = await BleClient.requestDevice({ allowDuplicates: false});
+    if (bleDevice) {
+      await BleClient.connect(deviceId, this.Disconnect);
+      this.presentToast('Connected');
+      localStorage.setItem(this.BLUETOOTH_DEVICE_NAME,bleDevice.name!)
+      localStorage.setItem(this.BLUETOOTH_DEVICE_ID, deviceId)
+      await this.AssignServices();
+    }
+    console.log("Ble Device " + bleDevice.name);
+  }
+
   async Scan() {
     await this.VerifyAndEnabled();
     await this.Initialize();
@@ -49,6 +79,7 @@ export class BluetoothPrinterService implements OnDestroy {
     if (bleDevice) {
       await BleClient.connect(bleDevice.deviceId, this.Disconnect);
       this.presentToast('Connected');
+      localStorage.setItem(this.BLUETOOTH_DEVICE_NAME,bleDevice.name!)
       localStorage.setItem(this.BLUETOOTH_DEVICE_ID, bleDevice.deviceId)
       await this.AssignServices();
     }
@@ -58,6 +89,7 @@ export class BluetoothPrinterService implements OnDestroy {
     const deviceId = localStorage.getItem(this.BLUETOOTH_DEVICE_ID);
     let bleService: BleService[] = await BleClient.getServices(deviceId!);
     if (bleService.length > 0 && bleService[0].characteristics.length > 0) {
+      console.log("UUID " + bleService[0].uuid);
       localStorage.setItem(this.BLUETOOTH_Service_UUID, bleService[0].uuid);
       localStorage.setItem(this.BLUETOOTH_CHARACTERISTIC_UUID, bleService[0].characteristics[0].uuid);
     }

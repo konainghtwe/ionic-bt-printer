@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.nainghtweoo.btprinter',
+  appId: 'com.calvinoo.btprinter',
   appName: 'ionic-bt-printer',
   webDir: 'www',
   plugins: {

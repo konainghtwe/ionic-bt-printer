@@ -3,14 +3,130 @@
     <ion-title>Bluetooth Printer</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true">
+<ion-content style="text-align: center;" [fullscreen]="true">
   <ion-list>
     <ion-item>
-      <ion-icon aria-hidden="true" name="bluetooth" slot="start"></ion-icon>
-      <ion-label>Bluetooth</ion-label>
-      <ion-toggle (ionChange)="btenablechange($event)" slot="end" [checked]="isBluetoothEnabled"></ion-toggle>
+      <ion-chip (click)="scanBluetooth()" style="width: 100%; height: 5vh;">
+        <ion-icon name="print-outline" color="primary"></ion-icon>
+        <ion-label>BT Printer</ion-label>
+        <ion-badge *ngIf="connectOrNot == 'Connected'" style="position: absolute; top: -3px; right: 3px; font-size: smaller;"
+          color="success">Connected</ion-badge>
+          <ion-badge *ngIf="connectOrNot == 'Not Connected'" style="position: absolute; top: -3px; right: 3px; font-size: smaller;"
+          color="danger">Not Connected</ion-badge>
+        <ion-label style="width: 70%;" class="ion-text-end">{{deviceId == null || deviceId == '' ? 'Device Not Found' : deviceName}}</ion-label>
+      </ion-chip>
+      <!-- <ion-toggle (ionChange)="btenablechange($event)" slot="end" [checked]="isBluetoothEnabled"></ion-toggle> -->
     </ion-item>
   </ion-list>
+
+  <ion-card style="width: 300px; margin: 0 auto;">
+    <ion-grid>
+      <ion-row style="background-color: gray; height: 5vh;">
+        <ion-col style="color: white; margin-top: 1vh;">
+          Invoice Style
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button (click)="setOpen(true)" size="small" style="font-size: 9px;">
+            <ion-icon slot="start" name="create-outline"></ion-icon>
+            Edit Info
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="ion-text-center">
+            <p><b>{{getShopName()}}</b></p>
+            <p>{{getShopAddress()}}</p>
+            <p>Tel : {{getShopTele()}}</p>
+            <p>Date : {{inv_date}}</p>
+            <p style="display: none;">Inv : {{getInvoiceNo()}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row style="border-top: 1px solid; border-bottom: 1px solid;">
+        <ion-col size="8" class="ion-text-left"><b>Item</b></ion-col>
+        <ion-col size="2" class="ion-text-center"><b>Qty</b></ion-col>
+        <ion-col size="2" class="ion-text-end"><b>Price</b></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" class="ion-text-left">Stock Name is There</ion-col>
+        <ion-col size="2" class="ion-text-center">1</ion-col>
+        <ion-col size="2" class="ion-text-end">100</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" class="ion-text-left">Stock Name is There</ion-col>
+        <ion-col size="2" class="ion-text-center">1</ion-col>
+        <ion-col size="2" class="ion-text-end">100</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" class="ion-text-left">Stock Name is There</ion-col>
+        <ion-col size="2" class="ion-text-center">1</ion-col>
+        <ion-col size="2" class="ion-text-end">100</ion-col>
+      </ion-row>
+      <ion-row style="border-top: 1px solid;">
+        <ion-col size="10" class="ion-text-end"><b>Total Amount</b></ion-col>
+        <ion-col size="2" class="ion-text-end">{{totalAmount}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="10" class="ion-text-end"><b>Discount</b></ion-col>
+        <ion-col size="2" class="ion-text-end">{{discountAmount}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="10" class="ion-text-end"><b>Tax</b></ion-col>
+        <ion-col size="2" class="ion-text-end">{{taxAmount}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="10" class="ion-text-end"><b>Service Charges</b></ion-col>
+        <ion-col size="2" class="ion-text-end">{{serviceCharges}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="10" class="ion-text-end"><b>Net Amount</b></ion-col>
+        <ion-col size="2" class="ion-text-end">{{netAmount}}</ion-col>
+      </ion-row>
+      <ion-row style="border-top: 1px solid; padding: 2vh;">
+        <ion-col class="ion-text-center"><b>Thank You</b></ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Invoice Information</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <ion-item>
+            <ion-input label="Enter shop name" labelPlacement="stacked" type="text" placeholder="Shop name"
+              [(ngModel)]="shop_name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Enter shop address" labelPlacement="stacked" type="text" placeholder="Shop Address"
+              [(ngModel)]="shop_address"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Enter shop tele:" labelPlacement="stacked" type="phone"
+              placeholder="Shop Telephone Number" [(ngModel)]="shop_tele"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Enter tax by percent(%)" labelPlacement="stacked" type="Number"
+              placeholder="Shop Tax Percent" [(ngModel)]="tax_percent"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Enter shop service charges by percent(%)" labelPlacement="stacked" type="Number"
+              placeholder="Shop Service Charges" [(ngModel)]="servicePercent"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Enter discount :" labelPlacement="stacked" type="Number" placeholder="Shop Discount"
+              [(ngModel)]="discountAmount"></ion-input>
+          </ion-item>
+          <ion-button (click)="confirm()" expand="full">Save</ion-button>
+        </ion-list>
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
 <ion-footer>
   <ion-toolbar>
