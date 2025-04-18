@@ -1,0 +1,78 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>POS Terminal Print</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+
+  <div class="menu">
+    <a href="javascript:void(0)" onclick="showProducts()">Products</a>
+    <a href="javascript:void(0)" onclick="showManageItems()">Manage Items</a>
+  </div>
+
+  <div class="container">
+    <div id="product-section">
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Search for items..." onkeyup="filterProducts()">
+      </div>
+
+      <div class="product-list" id="product-list">
+        <!-- Product items are rendered dynamically here -->
+      </div>
+
+      <div class="cart" id="cart">
+        <h3>Cart</h3>
+        <div id="cart-items"></div>
+        <div class="total" id="total">Total: $0.00</div>
+        <button class="checkout-btn" onclick="checkout()">Checkout</button>
+      </div>
+    </div>
+
+    <div id="manage-items-section" style="display: none;">
+      <div class="item-management">
+        <h3>Manage Items</h3>
+        <form id="item-form">
+          <input type="text" id="item-name" placeholder="Item Name" required>
+          <input type="number" id="item-price" placeholder="Item Price" required>
+          <button type="submit">Add Item</button>
+        </form>
+
+        <div class="item-list">
+          <h4>Existing Items</h4>
+          <ul id="existing-items"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="receipt-view" id="receipt">
+      <div class="receipt-width-selector">
+        <label>
+          <input type="radio" name="receipt-width" value="50" checked onchange="updateReceiptWidth(this.value)" /> 50mm
+        </label>
+        &nbsp;
+        <label>
+          <input type="radio" name="receipt-width" value="80" onchange="updateReceiptWidth(this.value)" /> 80mm
+        </label>
+      </div>
+      <div id="receipt-content" class="receipt-50mm">
+        <div class="receipt-header">
+          <h3>☕ Coffee Express</h3>
+          <p>123 Main St, Townsville</p>
+          <p>Tel: (123) 456-7890</p>
+          <p id="date-time"></p>
+          <p>------------------------------</p>
+        </div>
+        <div id="receipt-items"></div>
+        <div class="receipt-total" id="receipt-total"></div>
+        <div class="receipt-footer">
+          <p>Thank you for your purchase!</p>
+          <p>Have a great day ☀️</p>
+          <button class="print-btn" onclick="window.print()">Print Receipt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

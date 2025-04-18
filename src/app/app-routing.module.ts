@@ -11,6 +11,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'mpos',
+    loadChildren: () => import('./mpos/mpos.module').then( m => m.MposPageModule)
+  },
 ];
 
 @NgModule({

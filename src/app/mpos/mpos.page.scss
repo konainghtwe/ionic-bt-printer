@@ -1,0 +1,196 @@
+* {
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #f8f9fa;
+}
+
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    font-size: 1.4em;
+}
+
+.menu {
+    background: #34495e;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.menu a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    padding: 16px;
+}
+
+.search-box {
+    margin-bottom: 12px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 8px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.product {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    width: 48%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product h4 {
+    margin: 0 0 8px;
+}
+
+.product button {
+    background: #3498db;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cart {
+    margin-top: 20px;
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.total {
+    font-weight: bold;
+    font-size: 1.2em;
+    text-align: right;
+}
+
+.checkout-btn {
+    margin-top: 12px;
+    width: 100%;
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1em;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.receipt-view {
+    display: none;
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.receipt-header {
+    margin-bottom: 16px;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 8px;
+}
+
+.receipt-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    text-align: left;
+}
+
+.receipt-total {
+    font-weight: bold;
+    text-align: right;
+    margin-top: 12px;
+    border-top: 1px dashed #ccc;
+    padding-top: 8px;
+}
+
+.receipt-footer {
+    margin-top: 20px;
+    font-size: 0.85em;
+    color: #666;
+}
+
+.print-btn {
+    margin-top: 16px;
+    background: #34495e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.receipt-width-selector {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.receipt-50mm {
+    width: 240px;
+    margin: 0 auto;
+}
+
+.receipt-80mm {
+    width: 384px;
+    margin: 0 auto;
+}
+
+.item-management {
+    margin-top: 40px;
+}
+
+.item-management form input {
+    margin-bottom: 8px;
+}
+
+.item-list {
+    margin-top: 16px;
+}
+
+.item-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.item-list li {
+    margin-bottom: 8px;
+}

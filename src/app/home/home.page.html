@@ -21,11 +21,17 @@
 
   <ion-card style="width: 300px; margin: 0 auto;">
     <ion-grid>
-      <ion-row style="background-color: gray; height: 5vh;">
-        <ion-col style="color: white; margin-top: 1vh;">
+      <ion-row style="background-color: gray;">
+        <ion-col size="auto" style="color: white; margin: auto;">
+          <ion-select aria-label="58 mm" value="58">
+            <ion-select-option value="58">58 mm</ion-select-option>
+            <ion-select-option value="80">80 mm</ion-select-option>
+          </ion-select> 
+        </ion-col>
+        <ion-col style="color: white; margin: auto; text-align: left;">
           Invoice Style
         </ion-col>
-        <ion-col size="auto">
+        <ion-col size="auto" style="margin: auto;">
           <ion-button (click)="setOpen(true)" size="small" style="font-size: 9px;">
             <ion-icon slot="start" name="create-outline"></ion-icon>
             Edit Info

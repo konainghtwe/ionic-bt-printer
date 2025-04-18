@@ -44,6 +44,8 @@ export class HomePage {
   IS_FIRST_TIME = "isFirstTime";
   printer_width = "220px"; // 58 mm;
   connectOrNot = "Not Connected";
+  charLenghtForPrinter = 18; // total 30 chars for 58 mm, for stock name 18 chars ; So, 80 mm fits approximately total 41 characters, for stock name 29.
+
 
   getShopName(): string {
     return this.shop_name == "" ? "This area for the shop name." : this.shop_name;
@@ -97,6 +99,15 @@ export class HomePage {
     if (this.isFirstTime) {
       this.setOpen(true);
     }
+    const values = this.splitAndPadString("You want each substring to exactly", this.charLenghtForPrinter);
+
+    values.forEach(async (chunk, index) => {
+      let writedata = `${index + 1}. "${chunk}"`;
+      if(index == 0){
+        writedata = writedata  + this.splitAndPadString("  1", 5) + this.splitAndPadString("1000", 7);
+      }
+      console.log(writedata);
+    });
     this.shop_name = localStorage.getItem("shop_name")!;
     this.shop_address = localStorage.getItem("shop_address")!;
     this.shop_tele = localStorage.getItem("shop_tele")!;
@@ -122,12 +133,30 @@ export class HomePage {
   scanBluetooth() {
     this.bluetoothOperationsService.Scan();
     this.serviceUuid = this.bluetoothOperationsService.getBTServiceUUID();
-      this.characteristicUuid = this.bluetoothOperationsService.getBTCharUUID();
-      this.deviceName = this.bluetoothOperationsService.getBTDeviceName();
-      console.log("Device " + this.deviceName + " - " + this.deviceId);
-      console.log("Service uuid " + this.serviceUuid);
-      console.log("Char uuid " + this.characteristicUuid);
+    this.characteristicUuid = this.bluetoothOperationsService.getBTCharUUID();
+    this.deviceName = this.bluetoothOperationsService.getBTDeviceName();
+    console.log("Device " + this.deviceName + " - " + this.deviceId);
+    console.log("Service uuid " + this.serviceUuid);
+    console.log("Char uuid " + this.characteristicUuid);
   }
+
+  splitAndPadString(str: string, limit: number): string[] {
+    const result: string[] = [];
+
+    for (let i = 0; i < str.length; i += limit) {
+      let chunk = str.slice(i, i + limit);
+      if (chunk.length < limit) {
+        chunk = chunk.padEnd(limit, ' '); // pad with spaces to match the limit
+      }
+      result.push(chunk);
+    }
+
+    return result;
+  }
+
+  // Example usage
+  input = "My name is Naing Htwe Oo. Thank you for your help";
+
 
   async testPrintClick() {
     this.deviceId = this.bluetoothOperationsService.getBTDeviceId();
@@ -151,13 +180,22 @@ export class HomePage {
     await this.bluetoothOperationsService.UnderLine(this.deviceId, this.serviceUuid, this.characteristicUuid);
     await this.bluetoothOperationsService.FeedLeft(this.deviceId, this.serviceUuid, this.characteristicUuid);
 
-    await this.bluetoothOperationsService.WriteData(this.deviceId, this.serviceUuid, this.characteristicUuid, `Item        Qty   Price`);
+    await this.bluetoothOperationsService.WriteData(this.deviceId, this.serviceUuid, this.characteristicUuid, this.splitAndPadString("Item", this.charLenghtForPrinter) + ` Qty  Price `);
     await this.bluetoothOperationsService.UnderLine(this.deviceId, this.serviceUuid, this.characteristicUuid);
 
+    const values = this.splitAndPadString("You want each substring to exactly", this.charLenghtForPrinter);
+
+    values.forEach(async (chunk, index) => {
+      let writedata = `${index + 1}. "${chunk}"`;
+      if(index == 0){
+        writedata = writedata  + this.splitAndPadString("  1", 5) + this.splitAndPadString("1000", 7);
+      }
+      await this.bluetoothOperationsService.WriteData(this.deviceId, this.serviceUuid, this.characteristicUuid, writedata);
+      console.log(writedata);
+    });
     await this.bluetoothOperationsService.NewEmptyLine(this.deviceId, this.serviceUuid, this.characteristicUuid);
 
     await this.bluetoothOperationsService.FeedCenter(this.deviceId, this.serviceUuid, this.characteristicUuid);
-    await this.bluetoothOperationsService.WriteData(this.deviceId, this.serviceUuid, this.characteristicUuid, "Please Collect after one hour.");
     await this.bluetoothOperationsService.WriteData(this.deviceId, this.serviceUuid, this.characteristicUuid, "---Thank you---");
     await this.bluetoothOperationsService.FeedLeft(this.deviceId, this.serviceUuid, this.characteristicUuid);
 
