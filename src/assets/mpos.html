@@ -90,11 +90,12 @@
           <p>------------------------------</p>
         </div>
         <div id="receipt-items"></div>
-        <div class="receipt-total" id="receipt-total"></div>
+        <div class="receipt-total" id="receipt-total">
+        </div>
         <div class="receipt-footer">
           <p>Thank you for your purchase!</p>
           <p>Have a great day ☀️</p>
-          <button class="print-btn" onclick="window.print()">Print Receipt</button>
+          <button class="print-btn" onclick="printReceipt()">Print Receipt</button>
         </div>
       </div>
     </div>
@@ -244,6 +245,14 @@
     function showManageItems() {
       document.getElementById('product-section').style.display = 'none';
       document.getElementById('manage-items-section').style.display = 'block';
+    }
+
+    function printReceipt(){
+      document.getElementById('cart').style.display = 'block';
+      receipt.style.display = 'none';
+
+      cart.length = 0;
+      window.parent.postMessage("print","*");
     }
 
     document.getElementById('item-form').addEventListener('submit', addItem);
